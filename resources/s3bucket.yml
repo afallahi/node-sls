@@ -1,0 +1,8 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: s3 bucket creation 
+
+Resources:
+  NodeS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: node-cfn-bucket
