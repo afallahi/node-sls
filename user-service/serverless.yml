@@ -6,17 +6,31 @@ provider:
   runtime: nodejs18.x
 
 functions:
-  signup:
-    handler: app/handler.Signup
+  register:
+    handler: app/handler.Register
     events:
       - httpApi:
-          path: /signup
-          method: get
+          path: /register
+          method: post
+
+  login:
+    handler: app/handler.Login
+    events:
+      - httpApi:
+          path: /login
+          method: post
+
+
+custom:
+  autoswagger:
+    title: 'User Service'
+    apiType:  'httpApi'
 
 package:
   exclude:
     - README.md
 
 plugins:
+  - serverless-auto-swagger   # https://{your-url-domain}/swagger
   - serverless-offline
   - serverless-plugin-typescript

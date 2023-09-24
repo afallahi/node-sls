@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Signup = void 0;
-const Signup = (event) => __awaiter(void 0, void 0, void 0, function* () {
+exports.Login = exports.Register = void 0;
+const Register = (event) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`Event: ${event}`);
     return {
         statusCode: 200,
@@ -18,10 +18,24 @@ const Signup = (event) => __awaiter(void 0, void 0, void 0, function* () {
             "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-            message: "response from signup",
-            daya: {}
+            message: "response from register",
+            data: {}
         }),
     };
 });
-exports.Signup = Signup;
+exports.Register = Register;
+const Login = (event) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(`Event: ${event}`);
+    return {
+        statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+            message: "response from login",
+            data: {}
+        }),
+    };
+});
+exports.Login = Login;
 //# sourceMappingURL=handler.js.map

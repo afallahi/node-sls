@@ -5,6 +5,7 @@
   "main": "handler.ts",
   "scripts": {
     "dev": "serverless offline",
+    "start": "serverless offline start",
     "deploy": "serverless deploy --verbose"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "serverless-auto-swagger": "^2.12.0",
     "serverless-offline": "^13.0.0",
     "serverless-plugin-typescript": "^2.1.5"
   }

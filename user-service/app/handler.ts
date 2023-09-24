@@ -1,7 +1,7 @@
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 
 
-export const Signup = async (event: APIGatewayProxyEventV2) => {
+export const Register = async (event: APIGatewayProxyEventV2) => {
     console.log(`Event: ${event}`);
 
     return {
@@ -10,8 +10,23 @@ export const Signup = async (event: APIGatewayProxyEventV2) => {
             "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify ({
-            message: "response from signup",
-            daya: {}
+            message: "response from register",
+            data: {}
+        }),
+    };
+};
+
+export const Login = async (event: APIGatewayProxyEventV2) => {
+    console.log(`Event: ${event}`);
+
+    return {
+        statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify ({
+            message: "response from login",
+            data: {}
         }),
     };
 };
