@@ -1,0 +1,22 @@
+{
+  "name": "user-service",
+  "version": "1.0.0",
+  "description": "Serverless",
+  "main": "handler.ts",
+  "scripts": {
+    "dev": "serverless offline",
+    "deploy": "serverless deploy --verbose"
+  },
+  "dependencies": {
+    "@types/aws-lambda": "^8.10.122",
+    "aws-lambda": "^1.0.7",
+    "express": "^4.18.2",
+    "serverless-http": "^3.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "serverless-offline": "^13.0.0",
+    "serverless-plugin-typescript": "^2.1.5"
+  }
+}
