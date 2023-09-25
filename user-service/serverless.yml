@@ -4,6 +4,11 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs18.x
+  versionFunctions: false # dont keep versions
+  stage: "dev"
+  region: "us-east-1"
+  httpApi:
+    cors: true
 
 functions:
   register:
@@ -29,6 +34,7 @@ custom:
 package:
   exclude:
     - README.md
+    - .build
 
 plugins:
   - serverless-auto-swagger   # https://{your-url-domain}/swagger

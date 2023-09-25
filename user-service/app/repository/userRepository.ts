@@ -1,7 +1,9 @@
+import { UserSchema as UserModel } from "../models/UserSchema";
+
 export class UserRepository {
     constructor() {}
 
-    async CreateUserOperation() {
-        console.log("User created in database");
+    async CreateNewUser({ email, password, salt, phone, userType }: UserModel) {
+        console.log("Created New User");
     }
 }
