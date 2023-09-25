@@ -10,6 +10,6 @@ export const Register = middy((event: APIGatewayProxyEventV2) => {
     return service.CreateUser(event);
 }).use(bodyParser());
 
-export const Login = async (event: APIGatewayProxyEventV2) => {
+export const Login = middy((event: APIGatewayProxyEventV2) => {
     return service.LoginUser(event);
-};
+}).use(bodyParser());

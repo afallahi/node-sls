@@ -6,6 +6,7 @@ import { plainToClass } from "class-transformer";
 import { RegisterInput } from "../models/dto/RegisterInput";
 import { AppValidationError } from "../utils/errors";
 import { getHashedPassword, getSalt } from "../utils/password";
+import { LoginInput } from "../models/dto/LoginInput";
 
 @autoInjectable()
 export class UserService {
@@ -24,7 +25,7 @@ export class UserService {
     
             const salt = await getSalt();
             const hashedPassword = await getHashedPassword(input.password, salt);
-            const data = await this.repository.CreateNewUser({
+            const data = await this.repository.createNewUser({
                 userType: "Buyer",
                 phone: input.phone,
                 email: input.email,
@@ -35,14 +36,24 @@ export class UserService {
             return SuccessResponse(data);    
     
         } catch (error) {
-            console.log("create user error");
             return ErrorResponse(500, error);
         }
 
     }
 
     async LoginUser(event: APIGatewayProxyEventV2) {
-        return SuccessResponse({message: "user logged in successfully."})    
+        try {
+            const body = event.body;
+            const input = plainToClass(LoginInput, body);
+            const error = await AppValidationError(input);
+            if(error) return ErrorResponse(401, error);
+            const data = await this.repository.findUserByEmail(input.email);
+            return SuccessResponse(data);    
+
+        } catch (error) {
+            return ErrorResponse(500, error);
+        }
+
     }
 
 }
