@@ -35,6 +35,7 @@
 - Serverless Framework
 - PostgreSQL
 - REST API
+- Docker
 
 ## Usage
 
@@ -49,12 +50,14 @@ npm install
 deploy locally:
 
 ```
+make start_db 	# start Docker with PostgreSQL
 npm run dev
 ```
 
 deploy locally and generate swagger:
 
 ```
+make start_db 	# start Docker with PostgreSQL
 npm run start
 ```
 
