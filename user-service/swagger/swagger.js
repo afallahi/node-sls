@@ -43,6 +43,42 @@
           }
         }
       }
+    },
+    "/verify": {
+      "get": {
+        "summary": "verify",
+        "description": "",
+        "operationId": "verify.get./verify",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      },
+      "post": {
+        "summary": "verify",
+        "description": "",
+        "operationId": "verify.post./verify",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      }
     }
   },
   "definitions": {},

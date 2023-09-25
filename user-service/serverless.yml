@@ -17,12 +17,20 @@ functions:
       - httpApi:
           path: /register
           method: post
-
   login:
     handler: app/handler.Login
     events:
       - httpApi:
           path: /login
+          method: post
+  verify:
+    handler: app/handler.Verify
+    events:
+      - httpApi:
+          path: /verify
+          method: get
+      - httpApi:
+          path: /verify
           method: post
 
 

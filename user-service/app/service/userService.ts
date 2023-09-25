@@ -5,8 +5,9 @@ import { autoInjectable } from "tsyringe";
 import { plainToClass } from "class-transformer";
 import { RegisterInput } from "../models/dto/RegisterInput";
 import { AppValidationError } from "../utils/errors";
-import { GetToken, ValidatePassword, getHashedPassword, getSalt } from "../utils/password";
+import { GetToken, ValidatePassword, VerifyToken, getHashedPassword, getSalt } from "../utils/password";
 import { LoginInput } from "../models/dto/LoginInput";
+import { GenerateVerificationCode, SendVerificationCode } from "../utils/notification";
 
 @autoInjectable()
 export class UserService {
@@ -60,6 +61,22 @@ export class UserService {
             return ErrorResponse(500, error);
         }
 
+    }
+
+    async GetVerificationToken(event: APIGatewayProxyEventV2) {
+        const token = event.headers.authorization;
+        const payload = await VerifyToken(token);
+        if (payload) {
+            const {code, expiry} = GenerateVerificationCode();
+            const response = await SendVerificationCode(code, payload.phone);
+            return SuccessResponse({message: "verification code sent to your registered phone number"});
+        }
+
+        return SuccessResponse({message: "verification token success"});
+    }
+
+    async VerifyUser(event: APIGatewayProxyEventV2) {
+        return SuccessResponse({message: "verify user success"});
     }
 
 }
