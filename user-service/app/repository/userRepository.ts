@@ -5,5 +5,6 @@ export class UserRepository {
 
     async CreateNewUser({ email, password, salt, phone, userType }: UserModel) {
         console.log("Created New User");
+        return {}
     }
 }

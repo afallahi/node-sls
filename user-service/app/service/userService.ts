@@ -5,6 +5,7 @@ import { autoInjectable } from "tsyringe";
 import { plainToClass } from "class-transformer";
 import { RegisterInput } from "../models/dto/RegisterInput";
 import { AppValidationError } from "../utils/errors";
+import { getHashedPassword, getSalt } from "../utils/password";
 
 @autoInjectable()
 export class UserService {
@@ -19,8 +20,8 @@ export class UserService {
         const error = await AppValidationError(input);
         if(error) return ErrorResponse(401, error);
 
-        const salt = "";
-        const hashedPassword = "";
+        const salt = await getSalt();
+        const hashedPassword = await getHashedPassword(input.password, salt);
         const data = await this.repository.CreateNewUser({
             userType: "Buyer",
             email: input.email,
@@ -29,7 +30,7 @@ export class UserService {
             phone: input.phone
         });
 
-        return SuccessResponse(input);    
+        return SuccessResponse(data);    
     }
 
     async LoginUser(event: APIGatewayProxyEventV2) {
