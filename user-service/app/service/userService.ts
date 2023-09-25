@@ -5,7 +5,7 @@ import { autoInjectable } from "tsyringe";
 import { plainToClass } from "class-transformer";
 import { RegisterInput } from "../models/dto/RegisterInput";
 import { AppValidationError } from "../utils/errors";
-import { getHashedPassword, getSalt } from "../utils/password";
+import { GetToken, ValidatePassword, getHashedPassword, getSalt } from "../utils/password";
 import { LoginInput } from "../models/dto/LoginInput";
 
 @autoInjectable()
@@ -48,7 +48,13 @@ export class UserService {
             const error = await AppValidationError(input);
             if(error) return ErrorResponse(401, error);
             const data = await this.repository.findUserByEmail(input.email);
-            return SuccessResponse(data);    
+            const verifiedUser = await ValidatePassword(input.password, data.password, data.salt)
+            if(!verifiedUser) {
+                return ErrorResponse(401, "email or password is incorrect");
+            }
+
+            const token = GetToken(data);
+            return SuccessResponse({ token });
 
         } catch (error) {
             return ErrorResponse(500, error);

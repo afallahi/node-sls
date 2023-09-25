@@ -18,6 +18,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "serverless-http": "^3.1.1",
@@ -26,6 +27,7 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.3",
     "@types/pg": "^8.10.3",
     "serverless-auto-swagger": "^2.12.0",
     "serverless-offline": "^13.0.0",
