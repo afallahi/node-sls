@@ -7,7 +7,7 @@ import { RegisterInput } from "../models/dto/RegisterInput";
 import { AppValidationError } from "../utils/errors";
 import { GetToken, ValidatePassword, VerifyToken, getHashedPassword, getSalt } from "../utils/password";
 import { LoginInput } from "../models/dto/LoginInput";
-import { GenerateVerificationCode, SendVerificationCode } from "../utils/notification";
+import { GenerateVerificationCode, SendVerificationCode } from "../utils/verificationCode";
 
 @autoInjectable()
 export class UserService {
