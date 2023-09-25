@@ -25,6 +25,7 @@ const createResponse = (statusCode: number, data: unknown, message: string) => {
 }
 
 export const SuccessResponse = (data: object) => {
+    console.log(`success data: ${JSON.stringify(data)}`);
     return createResponse(200, data, "success");
 }
 
