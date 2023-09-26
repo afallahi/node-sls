@@ -92,17 +92,16 @@ export class UserService {
         // TODO: This is a hack. 'input.code' returns 'undefined'. Fix it and remove the following lines.
         const str: string = JSON.stringify(input);
         const val = str.split(":")[1];
-        console.log(`val: ${val}`);
         const val2 = val.split("\"")[1];
-        const code = val2.split("\\")[0];
-        
+        const code = val2.split("\\")[0];        
 
-        if(verification_code === parseInt(code)) {  // we should simply use input.code if fix the 'undefined' issue
+        if(verification_code === parseInt(code)) {  // TODO: we should simply use input.code if fix the 'undefined' issue
             const now = new Date();
             const diff = TimeDiff(expiry, now.toISOString(), "m");
 
             // TODO: hack: for dev purposes, lets assume code is not getting expired
 //            if (diff > 0) {
+                await this.repository.updateUserVerification(payload.email)    // TODO: better to use user_id to be unique
                 return SuccessResponse({message: "verify user success"});
             // } else {
             //     return ErrorResponse(403, "verification code expired");

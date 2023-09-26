@@ -29,14 +29,26 @@ export class UserRepository extends DBOps {
 
     async updateVerificationCode( email: string, code: number, expiry: Date ) {
         //const query = "UPDATE users SET verification_code=$1 expiry=$2 WHERE user_id=$3 RETURNING *";
-        const query = "UPDATE users SET verification_code=$1 WHERE email=$2 RETURNING *";
+        const query = "UPDATE users SET verification_code=$1 WHERE email=$2 AND verified=FALSE RETURNING *";
         //const values = [code, expiry, userId];
         const values = [code, email];
         const res = await this.executeQuery(query, values);
         if(res.rowCount > 0) {
             return res.rows[0] as UserModel;
         } 
-        return {}
+        throw new Error("Update verification code error")
     }
 
+
+    async updateUserVerification(email: string) {   //TODO: change to user_id later
+        //const query = "UPDATE users SET verified=TRUE WHERE user_id=$1 AND verified=FALSE RETURNING *";
+        const query = "UPDATE users SET verified=TRUE WHERE email=$1 AND verified=FALSE RETURNING *";
+        //const values = [userId];
+        const values = [email];
+        const res = await this.executeQuery(query, values);
+        if (res.rowCount > 0) {
+            return res.rows[0] as UserModel;
+        }
+        throw new Error("already verified");
+    }
 }

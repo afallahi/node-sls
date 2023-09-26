@@ -15,7 +15,7 @@ export const Login = middy((event: APIGatewayProxyEventV2) => {
     return service.LoginUser(event);
 }).use(bodyParser());
 
-export const Verify = async (event: APIGatewayProxyEventV2) => {
+export const Verify = middy ((event: APIGatewayProxyEventV2) => {
     const httpMethod = event.requestContext.http.method.toLowerCase();
     if(httpMethod === "get") {
         return service.GetVerificationToken(event);
@@ -24,4 +24,4 @@ export const Verify = async (event: APIGatewayProxyEventV2) => {
     } else {
         return ErrorResponse(404, "Not Found!")
     }
-}
+}).use(bodyParser());
