@@ -1,12 +1,10 @@
 import twilio from "twilio";
+require('dotenv').config();
 
-const accountSid = "";  //TODO: take from Twilio account
-const authToken = "";   //TODO: take from Twilio account
-const FROM_PHONE_NUMBER = "";   //TODO" take from Twilio account
-const client = twilio(accountSid, authToken);
+const client = twilio(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
 
 export const GenerateVerificationCode = () => {
-    const EXPIRY_MINUTES = 1;
+    const EXPIRY_MINUTES = 5;
     const code = Math.floor(10000 + Math.random() * 900000);
     let expiry = new Date();
     expiry.setTime(new Date().getTime() + EXPIRY_MINUTES * 60 * 1000);
@@ -14,11 +12,8 @@ export const GenerateVerificationCode = () => {
 }
 
 export const SendVerificationCode = async (code: number, toPhone: string) => {
-    const response = await client.messages.create({
-        body: `Your verification code is ${code}`,
-        from: FROM_PHONE_NUMBER,
-        to: toPhone.trim()
-    });
-    console.log(response);
-    return response;
+    const service = await client.verify.v2.services.create({friendlyName: 'User Verification Service'});
+    const verification = await client.verify.v2.services(process.env.VERIFY_SID).verifications.create({to: toPhone.trim(), channel: 'sms'})
+    return verification.status;
+
 }

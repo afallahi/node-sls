@@ -1,8 +1,7 @@
 import { UserSchema } from "../models/UserSchema";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-const JWT_SECRET_KEY= "sew9939pwpppwpeokdffjfjriru44030423-edmmfvnvdmjrp4l4k";  //TODO: remove hardcoded secret
+require('dotenv').config();
 
 export const getSalt = async () => {
     return await bcrypt.genSalt();
@@ -24,14 +23,14 @@ export const ValidatePassword = async (
 }
 
 export const GetToken = ({ user_id, userType, email, phone}: UserSchema) => {
-    return jwt.sign({ user_id, userType, email, phone }, JWT_SECRET_KEY, { expiresIn: "1d"});
+    return jwt.sign({ user_id, userType, email, phone }, process.env.JWT_SECRET_KEY, { expiresIn: "1d"});
 }
 
 export const VerifyToken = async (token: string): Promise<UserSchema | false> => {
 
     try {
         if(token !== "") {
-            const payload = await jwt.verify(token.split(" ")[1], JWT_SECRET_KEY);
+            const payload = await jwt.verify(token.split(" ")[1], process.env.JWT_SECRET_KEY);
             return payload as UserSchema;
         }
         return false;    
