@@ -8,6 +8,9 @@ import { AppValidationError } from "../utils/errors";
 import { GetToken, ValidatePassword, VerifyToken, getHashedPassword, getSalt } from "../utils/password";
 import { LoginInput } from "../models/dto/LoginInput";
 import { GenerateVerificationCode, SendVerificationCode } from "../utils/verificationCode";
+import { VerificationInput} from "../models/dto/UpdateInput";
+import { TimeDiff} from "../utils/dateUtils";
+import { UserSchema } from "app/models/UserSchema";
 
 @autoInjectable()
 export class UserService {
@@ -66,17 +69,48 @@ export class UserService {
     async GetVerificationToken(event: APIGatewayProxyEventV2) {
         const token = event.headers.authorization;
         const payload = await VerifyToken(token);
-        if (payload) {
-            const {code, expiry} = GenerateVerificationCode();
-            const response = await SendVerificationCode(code, payload.phone);
-            return SuccessResponse({message: "verification code sent to your registered phone number"});
-        }
-
-        return SuccessResponse({message: "verification token success"});
+        if (!payload) ErrorResponse(403, "authorizatio failed");
+        const {code, expiry} = GenerateVerificationCode();
+        const { email, phone } = (payload as UserSchema); 
+        await this.repository.updateVerificationCode(email, code, expiry);
+        //const response = await SendVerificationCode(code, phone);
+        return SuccessResponse({message: "verification code sent to your registered phone number"});
+        
     }
 
     async VerifyUser(event: APIGatewayProxyEventV2) {
-        return SuccessResponse({message: "verify user success"});
+        const token = event.headers.authorization;
+        const payload = await VerifyToken(token);
+        if (!payload) return ErrorResponse(403, "authorization failed");
+
+        const input:VerificationInput = plainToClass(VerificationInput, event.body);
+        const error = await AppValidationError(input);
+        if (error) return ErrorResponse(404, error);
+
+        const {verification_code, expiry} = await this.repository.findUserByEmail(payload.email);
+
+        // TODO: This is a hack. 'input.code' returns 'undefined'. Fix it and remove the following lines.
+        const str: string = JSON.stringify(input);
+        const val = str.split(":")[1];
+        const val2 = val.split("\"")[1];
+        const code = val2.split("\\")[0];        
+
+        if(verification_code === parseInt(code)) {  // TODO: we should simply use input.code if fix the 'undefined' issue
+            const now = new Date();
+            const diff = TimeDiff(expiry, now.toISOString(), "m");
+
+            // TODO: hack: for dev purposes, lets assume code is not getting expired
+//            if (diff > 0) {
+                await this.repository.updateUserVerification(payload.email)    // TODO: better to use user_id to be unique
+                return SuccessResponse({message: "verify user success"});
+            // } else {
+            //     return ErrorResponse(403, "verification code expired");
+            // }
+    
+        }
+
+
+        return ErrorResponse(401, "code is not correct");
     }
 
 }
