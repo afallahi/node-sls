@@ -1,17 +1,18 @@
 version: 0.2
-run-as: root
+run-as: Summer2023
 
 phases:
   install:
     runtime-versions:
       nodejs: 18
-      commands:
-        - npm install -g serverless
-        - npm install
+    commands:
+      - cd user-service
+      - npm install -g serverless
+      - npm install
   build:
     commands:
-      - serverless deploy
+      - serverless deploy --stage dev
 
 cache:
   paths:
-    - node_modules
+    - user-service/node_modules
