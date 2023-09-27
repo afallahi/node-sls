@@ -50,6 +50,7 @@ functions:
 
 
 custom:
+  serviceName: ${self:service}
   autoswagger:
     title: 'User Service'
     apiType:  'httpApi'  
