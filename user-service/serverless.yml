@@ -19,6 +19,10 @@ provider:
     AUTH_TOKEN: ${ssm:AUTH_TOKEN}
     FROM_PHONE_NUMBER: ${ssm:FROM_PHONE_NUMBER}
     VERIFY_SID: ${ssm:VERIFY_SID}
+    #PostgreSQL db
+    DB_USER: ${ssm:DB_USER}
+    DB_PASSWORD: ${ssm:DB_PASSWORD}
+
 
 
 functions:
@@ -49,6 +53,7 @@ custom:
   autoswagger:
     title: 'User Service'
     apiType:  'httpApi'  
+
   serverless-offline-ssm:
     stages:
       - offline
@@ -60,6 +65,9 @@ custom:
       AUTH_TOKEN: ${env:AUTH_TOKEN}
       FROM_PHONE_NUMBER: ${env:FROM_PHONE_NUMBER}
       VERIFY_SID: ${env:VERIFY_SID}
+      # db
+      DB_USER: ${env:DB_USER}
+      DB_PASSWORD: ${env:DB_PASSWORD}
 
 package:
   exclude:
