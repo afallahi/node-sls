@@ -1,14 +1,25 @@
 service: user-service
 frameworkVersion: '3'
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs18.x
   versionFunctions: false # dont keep versions
-  stage: "dev"
+  stage: ${opt:stage,'offline'}
   region: "us-east-1"
   httpApi:
     cors: true
+  environment:
+    #JWT
+    JWT_SECRET_KEY: ${ssm:JWT_SECRET_KEY}
+    #Twilio
+    ACCOUNT_SID: ${ssm:ACCOUNT_SID}
+    AUTH_TOKEN: ${ssm:AUTH_TOKEN}
+    FROM_PHONE_NUMBER: ${ssm:FROM_PHONE_NUMBER}
+    VERIFY_SID: ${ssm:VERIFY_SID}
+
 
 functions:
   register:
@@ -37,7 +48,18 @@ functions:
 custom:
   autoswagger:
     title: 'User Service'
-    apiType:  'httpApi'
+    apiType:  'httpApi'  
+  serverless-offline-ssm:
+    stages:
+      - offline
+    ssm:
+      # JWT
+      JWT_SECRET_KEY: ${env:JWT_SECRET_KEY}
+      # Twilio
+      ACCOUNT_SID: ${env:ACCOUNT_SID}
+      AUTH_TOKEN: ${env:AUTH_TOKEN}
+      FROM_PHONE_NUMBER: ${env:FROM_PHONE_NUMBER}
+      VERIFY_SID: ${env:VERIFY_SID}
 
 package:
   exclude:
@@ -45,6 +67,8 @@ package:
     - .build
 
 plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline-ssm
   - serverless-auto-swagger   # https://{your-url-domain}/swagger
   - serverless-offline
   - serverless-plugin-typescript
