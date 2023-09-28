@@ -21,6 +21,10 @@
 
 ## System Design
 
+<p align="center">
+  <img  src="./user-service/Serverless_CodePipeline.png">
+</p>
+
 ### Functional Requirements
 - User register and login
 - User verfication with OTP/SMS
@@ -36,6 +40,8 @@
 - PostgreSQL
 - REST API
 - Docker
+- - AWS CodePipeline (CI/CD)
+- AWS Parameter Store
 
 ## Usage
 
