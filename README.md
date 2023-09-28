@@ -66,11 +66,23 @@ deploy locally and generate swagger:
 make start_db 	# start Docker with PostgreSQL
 npm run start
 ```
-
 swagger will be available at `https://{base-url}/swagger`
 
-deploy to the cloud:
+![swagger](https://github.com/afallahi/node-sls/assets/73287428/143426aa-79b2-4b20-a49b-68bbb88e0553)
+
+
+deploy to the cloud manually:
 
 ```
 npm run deploy
 ```
+
+### CI/CD with CodePipeline
+
+- Push your changes and merge the branch into `master`.
+- CodeBuild pulls the changes and uses `buildspec.yml` to create a new build. CodeDeploy deploys the new build.
+
+
+![codepipeline](https://github.com/afallahi/node-sls/assets/73287428/19b11d52-851a-4136-ae06-410bd21f3321)
+
+
